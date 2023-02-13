@@ -1,0 +1,20 @@
+name: Check for changes in files
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: List changed files
+      run: |
+        git diff-tree --no-commit-id --name-only -r HEAD | xargs echo
+    - name: Print changed files
+      env:
+        CHANGED_FILES: ${{ toJson(steps.List changed files.outputs.stdout) }}
+      run: |
+        echo "Changed Files:"
+        echo "$CHANGED_FILES"
